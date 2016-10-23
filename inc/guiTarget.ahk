@@ -6,34 +6,35 @@ guiTarget() {
 	; properties
 	gui target: new
 	gui target: margin, 5, 5
-	gui target: +LabelguiTarget_ +Hwnd_guiTarget +AlwaysOnTop
+	gui target: +LabelguiTarget_ +Hwnd_guiTarget +AlwaysOnTop -Caption
 
 	; controls
-	gui target: font, s20 verdana
-	gui target: add, edit, w35 Number Right Disabled section
+	gui target: font, s15 verdana
+	gui target: add, edit, w30 Number Right Disabled section
 	gui target: font
 	
-	gui target: add, text, x+5 yp+25, h
+	gui target: add, text, x+5 yp+20, h
 	
-	gui target: font, s20 verdana
-	gui target: add, edit, x+5 ys w35 Number Right Disabled
+	gui target: font, s15 verdana
+	gui target: add, edit, x+5 ys w30 Number Right Disabled
 	gui target: font
 	
-	gui target: add, text, x+5 yp+25, m
+	gui target: add, text, x+5 yp+20, m
 	
-	gui target: font, s20 verdana
-	gui target: add, edit, x+5 ys w35 Number Right gguiTarget_refresh
+	gui target: font, s15 verdana
+	gui target: add, edit, x+5 ys w30 Number Right gguiTarget_refresh
 	gui target: font
 	
-	gui target: add, text, x+5 yp+25, s
+	gui target: add, text, x+5 yp+20, s
 	
 	; hotkeys
 	hotkey, IfWinActive, % "ahk_id " _guiTarget
-	hotkey, enter, guig_target_submit
+	hotkey, enter, guiTarget_submit
 	hotkey, IfWinActive
 	
 	; show
-	gui target: show
+	WinGetPos, X, Y, W, H, Stopwatch
+	gui target: show, % "x" x + 4 " y" y+30
 	ControlFocus, edit3, % "ahk_id " _guiTarget
 	
 	; close
@@ -95,11 +96,11 @@ guiTarget() {
 		ControlSend, Edit3, ^{end}
 	return
 	
-	guig_target_setControls:
+	guiTarget_setControls:
 	
 	return
 	
-	guig_target_submit:
+	guiTarget_submit:
 		loop, parse, % "g_target_h,g_target_m,g_target_s", `,
 		{
 			ControlGetText, %A_LoopField%, Edit%A_Index%

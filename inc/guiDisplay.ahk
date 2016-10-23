@@ -21,10 +21,10 @@ guiDisplay(input = "") {
 	gui Display: add, button, x5 w65 gguiDisplay_button, Start
 	gui Display: add, button, x+5 w65 gguiDisplay_reset, Reset
 	
-	Gosub guiDisplay_refresh
+	Gosub guiDisplay_reset
 	
 	; show
-	gui Display: show, NoActivate
+	gui Display: show, NoActivate, Stopwatch
 	WinWaitClose, % "ahk_id " _guiDisplay
 	exitapp
 
@@ -45,27 +45,32 @@ guiDisplay(input = "") {
 	
 	guiDisplay_reset:
 		GuiControl display: , Button1, Start
-		Gosub hk_reset
-	return
-	
-	guiDisplay_setTimer:
-		If !(g_mode = "timer")
-			return
-		target := guiTarget()
-		If !(target)
-			return
-		g_target := target
-		Gosub hk_reset
-		Gosub guiDisplay_refresh
-	return
-	
-	guiDisplay_refresh:
+		
 		If !(g_target) and (g_mode = "timer") {
 			GuiControl display: Disable, Start
 		}
 		else {
 			GuiControl display: Enable, Start
 		}
+		
+		Gosub hk_reset
+	return
+	
+	guiDisplay_setTimer:
+		GuiControl display: , Button1, Continue
+		Gosub hk_stop
+		If !(g_mode = "timer")
+			return
+		gui Display: +Disabled
+		target := guiTarget()
+		If !(target)
+		{
+			gui Display: -Disabled
+			return
+		}
+		g_target := target
+		Gosub guiDisplay_reset
+		gui Display: -Disabled
 	return
 	
 	guiDisplay_Contextmenu:
@@ -85,13 +90,11 @@ guiDisplay(input = "") {
 
 	guiDisplay_ContextMenu_stopwatch:
 		g_mode := "stopwatch"
-		Gosub guiDisplay_refresh
-		Gosub hk_reset
+		Gosub guiDisplay_reset
 	return
 
 	guiDisplay_ContextMenu_timer:
 		g_mode := "timer"
-		Gosub guiDisplay_refresh
-		Gosub hk_reset
+		Gosub guiDisplay_reset
 	return
 }

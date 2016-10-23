@@ -11,6 +11,7 @@ g_nullTime := A_YYYY A_MM A_DD 00 00 00
 ; g_target := A_YYYY A_MM A_DD 01 11 11
 g_mode := "stopwatch"
 guiDisplay("00:00:00")
+; guiTarget()
 return
 
 TimeTimer:
@@ -91,13 +92,14 @@ alarm(on = "") {
 		loop {
 			SoundBeep, 2200, 125
 			count++
-			If (count = 3)
+			If (count = 4)
 			{
 				count = ""
-				sleep 200
+				sleep 400
 			}
 		} until alarmOff
 	}
 }
 
+#IfWinActive, ahk_exe Notepad++.exe
 ~^s::reload
