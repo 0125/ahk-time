@@ -57,8 +57,6 @@ guiDisplay(input = "") {
 	return
 	
 	guiDisplay_setTimer:
-		GuiControl display: , Button1, Continue
-		Gosub hk_stop
 		If !(g_mode = "timer")
 			return
 		gui Display: +Disabled
