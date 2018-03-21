@@ -101,5 +101,9 @@ alarm(on = "") {
 	}
 }
 
+moveGui:
+	PostMessage, 0xA1, 2,,, A
+return
+
 #IfWinActive, ahk_exe Notepad++.exe
 ~^s::reload

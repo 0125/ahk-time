@@ -1,4 +1,4 @@
-guiDisplay(input = "") {
+﻿guiDisplay(input = "") {
 	static _guiDisplay_digits
 	
 	If (_guiDisplay_digits) and (input)	{
@@ -11,9 +11,19 @@ guiDisplay(input = "") {
 	; properties
 	gui Display: new
 	gui Display: margin, 5, 5
-	gui Display: +LabelguiDisplay_ +Hwnd_guiDisplay
+	gui Display: +LabelguiDisplay_ +Hwnd_guiDisplay -Border
 	
 	; controls
+	gui Display: font, s30 verdana
+	gui Display: add, Text, x0 w20 y-20 cGray gguiDisplay_moveGui, ███
+	gui Display: add, Text, x14 w20 y-20 cGray gguiDisplay_moveGui, ███
+	gui Display: font,
+	
+	gui Display: add, Text, x4 y4 BackGroundTrans, Timer
+	gui Display: add, Button, x0 y0 w0 h0
+	gui Display: add, Button, x110 y0 gguiDisplay_minimize, -
+	gui Display: add, Button, x127 y0 gguiDisplay_close, X
+	
 	gui Display: font, s25 verdana
 	gui Display: add, text, x5 w135 Center gguiDisplay_setTimer hwnd_guiDisplay_digits, 00:00:00
 	gui Display: font
@@ -24,10 +34,22 @@ guiDisplay(input = "") {
 	Gosub guiDisplay_reset
 	
 	; show
-	gui Display: show, NoActivate, Stopwatch
+	gui Display: show, w145, Stopwatch
 	WinWaitClose, % "ahk_id " _guiDisplay
 	exitapp
 
+	guiDisplay_moveGui:
+		PostMessage, 0xA1, 2,,, A
+	return
+	
+	guiDisplay_close:
+		exitapp
+	return
+	
+	guiDisplay_minimize:
+		WinMinimize
+	return
+	
 	guiDisplay_button:
 		If (A_GuiControl = "Start") {
 			GuiControl display: , Button1, Stop
@@ -52,6 +74,8 @@ guiDisplay(input = "") {
 		else {
 			GuiControl display: Enable, Start
 		}
+		
+		WinActivate, Stopwatch
 		
 		Gosub hk_reset
 	return
