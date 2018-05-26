@@ -1,3 +1,5 @@
+#SingleInstance, off
+
 #Include, %A_ScriptDir%\inc
 #Include, guiDisplay.ahk
 #Include, guiTarget.ahk

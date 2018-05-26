@@ -15,14 +15,16 @@
 	
 	; controls
 	gui Display: font, s30 verdana
-	gui Display: add, Text, x0 w20 y-20 cGray gguiDisplay_moveGui, ███
-	gui Display: add, Text, x14 w20 y-20 cGray gguiDisplay_moveGui, ███
+	; gui Display: add, Progress, x0 y0 w65 h23 cGray, 100
+	; gui Display: add, Text, x0 y-20 w20 h20 cGray Border gguiDisplay_moveGui, ██████████████
+	gui Display: add, Text, x0 y0 w65 h23 Border cGray gguiDisplay_moveGui
 	gui Display: font,
 	
 	gui Display: add, Text, x4 y4 BackGroundTrans, Timer
 	gui Display: add, Button, x0 y0 w0 h0
-	gui Display: add, Button, x110 y0 gguiDisplay_minimize, -
-	gui Display: add, Button, x127 y0 gguiDisplay_close, X
+	gui Display: add, Button, x68 y0 h23 w23 gguiDisplay_alwaysontop, +
+	gui Display: add, Button, x94 y0 h23 w23 gguiDisplay_minimize, -
+	gui Display: add, Button, x120 y0 h23 w23 gguiDisplay_close, X
 	
 	gui Display: font, s25 verdana
 	gui Display: add, text, x5 w135 Center gguiDisplay_setTimer hwnd_guiDisplay_digits, 00:00:00
@@ -48,6 +50,10 @@
 	
 	guiDisplay_minimize:
 		WinMinimize
+	return
+	
+	guiDisplay_alwaysontop:
+		WinSet, AlwaysOnTop, Toggle
 	return
 	
 	guiDisplay_button:
