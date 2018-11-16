@@ -1,4 +1,4 @@
-guiTarget() {
+guiTarget(input) { ; input = hwnd of parent gui to show this gui on top of
 	global g_target_h
 	global g_target_m
 	global g_target_s
@@ -33,7 +33,7 @@ guiTarget() {
 	hotkey, IfWinActive
 	
 	; show
-	WinGetPos, X, Y, W, H, Stopwatch
+	WinGetPos, X, Y, W, H, % "ahk_id " input
 	gui target: show, % "x" x + 4 " y" y+30
 	ControlFocus, edit3, % "ahk_id " _guiTarget
 	

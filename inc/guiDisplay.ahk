@@ -90,7 +90,7 @@
 		If !(g_mode = "timer")
 			return
 		gui Display: +Disabled
-		target := guiTarget()
+		target := guiTarget(_guiDisplay)
 		If !(target)
 		{
 			gui Display: -Disabled
