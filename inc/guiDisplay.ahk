@@ -1,5 +1,6 @@
 ﻿guiDisplay(input = "") {
 	static _guiDisplay_digits
+	global guiDisplay_title
 	
 	If (_guiDisplay_digits) and (input)	{
 		GuiControl display: , % _guiDisplay_digits, % input
@@ -18,9 +19,9 @@
 	; gui Display: add, Progress, x0 y0 w65 h23 cGray, 100
 	; gui Display: add, Text, x0 y-20 w20 h20 cGray Border gguiDisplay_moveGui, ██████████████
 	gui Display: add, Text, x0 y0 w65 h23 Border cGray gguiDisplay_moveGui
-	gui Display: font,
+	gui Display: font
 	
-	gui Display: add, Text, x4 y4 BackGroundTrans, Timer
+	gui Display: add, Text, x4 y4 w60 BackGroundTrans vguiDisplay_title, Timer
 	gui Display: add, Button, x0 y0 w0 h0
 	gui Display: add, Button, x68 y0 h23 w23 gguiDisplay_alwaysontop, +
 	gui Display: add, Button, x94 y0 h23 w23 gguiDisplay_minimize, -
@@ -102,6 +103,15 @@
 	return
 	
 	guiDisplay_Contextmenu:
+		; prompt for new title if click-click on title bar
+		MouseGetPos, OutputVarX, OutputVarY, OutputVarWin, OutputVarControl 
+		If (OutputVarControl = "Static1") or (OutputVarControl = "Static2") { ; drag control or title text control
+			InputBox, output , Timer, Choose a new title
+			If (output)
+				GuiControl Display: Text, guiDisplay_title, % output
+			return
+		}
+		
 		menu, Display, add
 		menu, Display, DeleteAll
 		
