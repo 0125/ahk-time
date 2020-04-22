@@ -2,6 +2,10 @@ class class_stopwatch {
     __New() {
     }
 
+    Setup() {
+        mainGui.SetText("Static3", "00:00:00") ; reset main gui
+    }
+
     Start() {
         TrackTime.Start()
         SetTimer, RefreshStopwatch, On
@@ -15,19 +19,27 @@ class class_stopwatch {
     Stop() {
         SetTimer, RefreshStopwatch, Off
         TrackTime.Stop() ; reset and stop time tracking
+        mainGui.SetText("Static3", "00:00:00") ; reset main gui
     }
 
     Reset() {
-        SetTimer, RefreshStopwatch, On
+        SetTimer, RefreshStopwatch, Off
         TrackTime.Reset()
+        mainGui.SetText("Static3", "00:00:00") ; reset main gui
     }
 
     Refresh() {
-        CoordMode, Tooltip, Screen
-    
+        static previousPassedTime
+
         passedTime := TrackTime.passedTime
 
-        tooltip % FormatTimeSeconds(passedTime) "`n" A_Now "`n" passedTime,0,0
+        If !(passedTime = previousPassedTime) ; only update if time changed to prevent visual glitches
+            mainGui.SetText("Static3", FormatTimeSeconds(passedTime))
+
+        previousPassedTime := passedTime
+
+        ; CoordMode, Tooltip, Screen
+        ; tooltip % FormatTimeSeconds(passedTime) "`n" A_Now "`n" passedTime,0,0 ; debug
     }
 }
 

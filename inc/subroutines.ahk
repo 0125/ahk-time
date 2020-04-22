@@ -16,3 +16,6 @@ debug:
     ; stopwatch.Stop()
     ; stopwatch.Start()
 return
+
+dummyHandler:
+return

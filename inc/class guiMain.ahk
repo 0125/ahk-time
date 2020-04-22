@@ -12,6 +12,7 @@ class guiMainClass extends gui {
         ; properties
         this.Margin(5, 5)
         this.Options("-border")
+        this.Options("+LabelguiMain_")
 
         ; controls
         this.Font("s1")
@@ -32,22 +33,21 @@ class guiMainClass extends gui {
         this.Add("Button", "x+5 w65 gguiMain_BtnHandler", "Reset")
 
         ; show
+        this.Pos(1565, 5)
         this.Show()
-
-        
     }
 
-    MoveGui() { ; use wm_mousemove event to drag gui over both text timer and text border controls
+    MoveGui() { ; wm_mousemove event is used since this method was causing issues
         msgbox % A_ThisFunc
         PostMessage, 0xA1, 2,,, A
     }
 
     AlwaysOnTop() {
-        msgbox % A_ThisFunc
+        WinSet, AlwaysOnTop, Toggle, % "ahk_id " this.hwnd
     }
 
     Minimize() {
-        msgbox % A_ThisFunc
+        WinMinimize, % "ahk_id " this.hwnd
     }
 
     SetTarget() {
@@ -55,22 +55,24 @@ class guiMainClass extends gui {
     }
 
     Start() {
-        msgbox % A_ThisFunc
+        %g_mode%.Start()
     }
 
     Reset() {
-        msgbox % A_ThisFunc
+        %g_mode%.Reset()
+    }
+
+    Stop() {
+        %g_mode%.Stop()
     }
 
     Close() {
-        msgbox % A_ThisFunc
+        exitapp
     }    
 }
 
 guiMain_BtnHandler:
-    MouseGetPos, , , , OutputVarControlClassNN, 0 ; get control classNN
-    ControlGetText, OutputControlText , % OutputVarControlClassNN, A
-    OutputControlText := StrReplace(OutputControlText, A_Space)
+    OutputControlText := getMouseControl("retrieveControlText")
 
     If InStr(OutputControlText, ":") ; handle the ever changing digit text control
         OutputControlText := "Digits"
@@ -88,4 +90,34 @@ guiMain_HotkeyEnter:
     for a, b in guiMainClass.Instances 
 		if (a = WinExist("A")+0) ; if instance gui hwnd is identical to currently active window hwnd
 			b["Events"]["_HotkeyEnter"].Call()
+return
+
+guiMain_ContextMenu:
+    If !(getMouseControl() = "Static3") ; only continue if right clicked on digits
+        return
+    
+    ; reset menu
+    Menu, menuChooseMode, Add, dummyHandler
+    Menu, menuChooseMode, DeleteAll
+
+    ; menu items
+    Menu, menuChooseMode, Add, Timer, menuChooseMode_Timer
+    Menu, menuChooseMode, Add, Stopwatch, menuChooseMode_Stopwatch
+
+    Menu, menuChooseMode, Check, % g_mode ; check current mode
+
+    ; show menu
+    Menu, menuChooseMode, Show
+return
+
+menuChooseMode_Stopwatch:
+    mainGui.Stop()
+    g_mode := "stopwatch"
+    %g_mode%.Setup()
+return
+
+menuChooseMode_Timer:
+    mainGui.Stop()
+    g_mode := "timer"
+    %g_mode%.Setup()
 return

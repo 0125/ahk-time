@@ -26,7 +26,9 @@ class class_trackTime {
     }
 
     Reset() {
+        SetTimer, UpdateTrackedTime, Off
         this.pausedTime := ""
+        this.startTime := A_Now
     }
 
     Refresh() {

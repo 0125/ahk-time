@@ -16,3 +16,16 @@ FormatTimeSeconds(input) {
 
     return output
 }
+
+getMouseControl(getText := "") {
+    MouseGetPos, , , , OutputVarControlClassNN, 0 ; get control classNN eg. Edit1
+    
+    If (getText) {
+        ControlGetText, OutputControlText , % OutputVarControlClassNN, A ; retrieve control text
+        output := StrReplace(OutputControlText, A_Space)
+    }
+    else
+        output := OutputVarControlClassNN
+
+    return output
+}
