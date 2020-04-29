@@ -1,4 +1,9 @@
 debug:
+    mainGui.Setup() ; show main gui
+    Gosub menuChooseMode_TimerUntil
+    
+
+    return
     ; debugging - timer
     loop, 3 {
         timer.Start()

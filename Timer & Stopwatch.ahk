@@ -1,38 +1,28 @@
 /*
     Todo
-        gui
-            write guis into classes - check sm-manageClips for code
-                add display gui
-                    create function with only the basic gui controls
-                    then add functionality to each button one by one
-                add set target gui
-                    class class_timer SetTarget() - add target gui
-        class class_timer add checks for starting timer without target set?
-        gui main
-            add timer renaming
-            ability to move the gui
-        testing
-        check feature parity against old script
-            notably graying out gui buttons and such
-        close github issues
-        disable #SingleInstance for compiled script
+        enable #SingleInstance Off for compiled script and force for uncompiled
 */
-#SingleInstance, force
-; OnMessage(0x201, "WM_LBUTTONDOWN") ; WM_LBUTTONDOWN := 0x201 
-; OnMessage(0x204, "WM_RBUTTONDOWN") ; WM_RBUTTONDOWN := 0x204 
+#SingleInstance Off
+#Include *i fileInstallList.ahk
+If (A_IsCompiled)
+    Menu, Tray, Icon , % A_ScriptDir "\res\icon.ico"
+OnMessage(0x201, "WM_LBUTTONDOWN") ; WM_LBUTTONDOWN := 0x201 
+OnMessage(0x204, "WM_RBUTTONDOWN") ; WM_RBUTTONDOWN := 0x204 
 
 global g_nullTime := A_YYYY A_MM A_DD 00 00 00  ; used by timestamp related command eg. EnvAdd, FormatTime
-global g_mode := "stopwatch"                ; timer or stopwatch
+global g_mode := "timer"                ; timer or stopwatch
 global mainGui := new guiMainClass
+global setTargetGui := new guiSetTargetClass
 global stopwatch := new class_stopwatch
 global timer := new class_timer
 global TrackTime := new class_trackTime
 global g_debug := false
+setTargetGui.Setup() ; create target gui, hidden
 If (g_debug) {
     Gosub debug
     return
 }
-mainGui.Setup()
+mainGui.Setup() ; show main gui
 return
 
 WM_LBUTTONDOWN() {
@@ -52,13 +42,16 @@ WM_RBUTTONDOWN() {
     if (ErrorLevel)
         return ; CANCEL was pressed.
 
-    mainGui.SetText("Static2", input)
+    mainGui.SetText("Static2", input) ; title bar
 }
 
+#If !(A_IsCompiled)
 ~^s::reload
+#If
 #Include, <class gui>
 #Include, %A_ScriptDir%\inc
 #Include, class guiMain.ahk
+#Include, class guiSetTarget.ahk
 #Include, class stopwatch.ahk
 #Include, class timer.ahk
 #Include, class trackTime.ahk

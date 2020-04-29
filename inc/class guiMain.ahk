@@ -33,7 +33,8 @@ class guiMainClass extends gui {
         this.Add("Button", "x+5 w65 gguiMain_BtnHandler", "Reset")
 
         ; show
-        this.Pos(1565, 5)
+        If (g_debug)
+            this.Pos(1565, 5)
         this.Show()
     }
 
@@ -51,7 +52,13 @@ class guiMainClass extends gui {
     }
 
     SetTarget() {
-        msgbox % A_ThisFunc
+        If !(g_mode = "timer")
+            return
+        
+        target := setTargetGui.GetTarget(%g_mode%.target)
+        If !(target)
+            return
+        %g_mode%.SetTarget(target)
     }
 
     Start() {
@@ -102,6 +109,7 @@ guiMain_ContextMenu:
 
     ; menu items
     Menu, menuChooseMode, Add, Timer, menuChooseMode_Timer
+    Menu, menuChooseMode, Add, Timer until ..., menuChooseMode_TimerUntil
     Menu, menuChooseMode, Add, Stopwatch, menuChooseMode_Stopwatch
 
     Menu, menuChooseMode, Check, % g_mode ; check current mode
@@ -120,4 +128,10 @@ menuChooseMode_Timer:
     mainGui.Stop()
     g_mode := "timer"
     %g_mode%.Setup()
+return
+
+menuChooseMode_TimerUntil:
+    mainGui.Stop()
+    g_mode := "timer"
+    %g_mode%.SetTargetUntil()
 return
