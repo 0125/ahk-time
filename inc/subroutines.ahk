@@ -1,6 +1,6 @@
 debug:
     mainGui.Setup() ; show main gui
-    Gosub menuChooseMode_TimerUntil
+    ; Gosub menuChooseMode_TimerUntil
     
 
     return

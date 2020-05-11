@@ -1,11 +1,4 @@
 class class_stopwatch {
-    __New() {
-    }
-
-    Setup() {
-        mainGui.SetText("Static3", "00:00:00") ; reset main gui
-    }
-
     Start() {
         TrackTime.Start()
         SetTimer, RefreshStopwatch, On
