@@ -21,6 +21,8 @@
         return
     }
     mainGui.Setup() ; show main gui
+    WinWaitClose, % mainGui.ahkid ; if gui gets closed from alt+tab menu, 'GuiClose' label is not triggered
+    exitapp
 return
 
 ; global hotkeys

@@ -145,7 +145,7 @@ class class_mainGuiClass extends gui {
 
     Close() {
         exitapp
-    }    
+    }
 }
 
 mainGui_BtnHandler:
