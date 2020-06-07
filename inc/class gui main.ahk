@@ -98,13 +98,15 @@ class class_mainGuiClass extends gui {
         }
 
         %g_mode%.SetTarget(outputSeconds)
+        %g_mode%.Start() ; start counting down to set time
     }
 
     SetTargetUntill() {
         ; get user input target
-        target := inputGui.Get()
-        If !(target)
+        input := inputGui.Get()
+        If !(input)
             return
+        target := input            
 
         ; modify target to be compatible with FormatTime
         loop, {
@@ -126,7 +128,13 @@ class class_mainGuiClass extends gui {
         %g_mode%.SetTarget(differenceSeconds)
 
         mainGui.SetText("Static3", FormatTimeSeconds(differenceSeconds))
-        mainGui.SetText("Static2", "Until " input) ; title bar
+        loop, parse, input ; add ':' to input eg. 1300 to 13:00
+        {
+            title .= A_LoopField
+            If (A_Index = 2)
+            title .= ":"
+        }
+        mainGui.SetText("Static2", "Until " title) ; title bar
 
         %g_mode%.Start() ; start counting down to set time
     }
@@ -149,6 +157,11 @@ class class_mainGuiClass extends gui {
 }
 
 mainGui_BtnHandler:
+    ; ignore 'menu bar'
+    control := getMouseControl()
+    if InStr(control, "Static1") or InStr(control, "Static2")
+        return
+
     OutputControlText := getMouseControl("retrieveControlText")
 
     If InStr(OutputControlText, ":") ; handle the ever changing digit text control

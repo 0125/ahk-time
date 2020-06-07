@@ -1,4 +1,5 @@
 WM_LBUTTONDOWN() {
+    ; ignore everything except the 'menu bar'
     control := getMouseControl()
     if !InStr(control, "Static1") and !InStr(control, "Static2")
         return
